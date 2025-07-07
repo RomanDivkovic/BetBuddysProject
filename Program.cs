@@ -5,8 +5,18 @@ using MyDotNetProject.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
-builder.Services.AddDbContext<BetBuddysDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (builder.Environment.IsDevelopment())
+{
+    // Development: Use SQLite
+    builder.Services.AddDbContext<BetBuddysDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else
+{
+    // Production: Use PostgreSQL (free tier on Railway/Supabase/Neon)
+    builder.Services.AddDbContext<BetBuddysDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("ProductionConnection")));
+}
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
