@@ -34,7 +34,7 @@ namespace MyDotNetProject.Data
             base.OnModelCreating(modelBuilder);
 
             // Configure relationships and constraints
-            
+
             // User relationships
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentMessages)

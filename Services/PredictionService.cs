@@ -91,7 +91,7 @@ namespace MyDotNetProject.Services
             {
                 prediction.IsCorrect = prediction.PredictedWinnerId == winnerId;
                 prediction.IsCorrectMethod = prediction.Method.ToLower() == method.ToLower();
-                
+
                 // Simple scoring system: 1 point for correct winner, bonus point for correct method
                 int points = 0;
                 if (prediction.IsCorrect == true)
@@ -102,7 +102,7 @@ namespace MyDotNetProject.Services
                         points += 1;
                     }
                 }
-                
+
                 prediction.PointsEarned = points;
                 prediction.UpdatedAt = DateTime.UtcNow;
             }

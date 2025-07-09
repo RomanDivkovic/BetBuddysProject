@@ -21,7 +21,14 @@ namespace MyDotNetProject.Services
             _logger = logger;
 
             var baseUrl = _configuration["MmaApi:BaseUrl"];
-            var apiKey = _configuration["MmaApi:ApiKey"];
+            // Try to get API key from environment variable first, then fall back to configuration
+            var apiKey = Environment.GetEnvironmentVariable("MMA_API_KEY") 
+                        ?? _configuration["MmaApi:ApiKey"];
+
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new InvalidOperationException("MMA API key not found. Set MMA_API_KEY environment variable or configure MmaApi:ApiKey in appsettings.");
+            }
 
             _httpClient.BaseAddress = new Uri(baseUrl!);
             _httpClient.DefaultRequestHeaders.Add("x-apisports-key", apiKey);
@@ -33,9 +40,9 @@ namespace MyDotNetProject.Services
             try
             {
                 _logger.LogInformation("Fetching MMA events for date: {Date}", date);
-                
+
                 var response = await _httpClient.GetAsync($"/fights?date={date}");
-                
+
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("MMA API request failed with status: {StatusCode}", response.StatusCode);

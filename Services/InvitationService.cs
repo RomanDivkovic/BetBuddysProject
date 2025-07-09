@@ -65,7 +65,7 @@ namespace MyDotNetProject.Services
             if (accept)
             {
                 invitation.Status = "accepted";
-                
+
                 // Add user to group
                 var user = await _context.Users.FindAsync(userId);
                 if (user != null)
@@ -79,7 +79,7 @@ namespace MyDotNetProject.Services
                         MemberType = "member",
                         JoinedAt = DateTime.UtcNow
                     };
-                    
+
                     _context.GroupMembers.Add(groupMember);
                 }
             }
@@ -199,7 +199,7 @@ namespace MyDotNetProject.Services
             {
                 var userId = userGroup.Key;
                 var userPreds = userGroup.ToList();
-                
+
                 var totalPoints = userPreds.Sum(p => p.PointsEarned ?? 0);
                 var correctPredictions = userPreds.Count(p => p.IsCorrect == true);
                 var totalPredictions = userPreds.Count;
