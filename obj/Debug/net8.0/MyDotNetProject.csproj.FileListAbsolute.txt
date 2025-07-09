@@ -36,7 +36,6 @@
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/System.Composition.Hosting.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/System.Composition.Runtime.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/System.Composition.TypedParts.dll
-/Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/System.Text.Json.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.resources.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.resources.dll
@@ -94,11 +93,6 @@
 /Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/MyDotNetProject.MvcApplicationPartsAssemblyInfo.cache
 /Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets.build.json
 /Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets.development.json
-/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets/msbuild.MyDotNetProject.Microsoft.AspNetCore.StaticWebAssets.props
-/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets/msbuild.build.MyDotNetProject.props
-/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.MyDotNetProject.props
-/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.MyDotNetProject.props
-/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets.pack.json
 /Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/scopedcss/bundle/MyDotNetProject.styles.css
 /Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/MyDotNet.3EC1C451.Up2Date
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/Microsoft.Data.Sqlite.dll
@@ -126,3 +120,14 @@
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/runtimes/win-arm64/native/e_sqlite3.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/runtimes/win-x64/native/e_sqlite3.dll
 /Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
+/Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/appsettings.Production.json
+/Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/Npgsql.dll
+/Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/MyDotNetProject.sourcelink.json
+/Users/romandivkovic/MyDotNetProject/bin/Debug/net8.0/MyDotNetProject.staticwebassets.endpoints.json
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/rpswa.dswa.cache.json
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/rjimswa.dswa.cache.json
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets.build.json.cache
+/Users/romandivkovic/MyDotNetProject/obj/Debug/net8.0/staticwebassets.build.endpoints.json

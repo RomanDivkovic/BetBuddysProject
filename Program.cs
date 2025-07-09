@@ -2,6 +2,19 @@
 using MyDotNetProject.Data;
 using MyDotNetProject.Services;
 
+// Load environment variables from .env file FIRST (before creating builder)
+if (File.Exists(".env"))
+{
+    foreach (var line in File.ReadAllLines(".env"))
+    {
+        var parts = line.Split('=', 2);
+        if (parts.Length == 2 && !parts[0].StartsWith("#"))
+        {
+            Environment.SetEnvironmentVariable(parts[0], parts[1]);
+        }
+    }
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -34,6 +47,7 @@ builder.Services.AddCors(options =>
 });
 
 // Add custom services
+builder.Services.AddHttpClient<IMmaApiService, MmaApiService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IEventService, EventService>();

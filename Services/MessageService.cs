@@ -62,7 +62,7 @@ namespace MyDotNetProject.Services
 
             // Create or update conversation
             var conversation = await _context.Conversations
-                .FirstOrDefaultAsync(c => 
+                .FirstOrDefaultAsync(c =>
                     (c.Participant1Id == senderId && c.Participant2Id == receiverId) ||
                     (c.Participant1Id == receiverId && c.Participant2Id == senderId));
 
