@@ -51,6 +51,49 @@ namespace MyDotNetProject.Services
             return invitation;
         }
 
+        public async Task<Invitation> CreateInvitationAsync(string groupId, string userEmail, string invitedByUserId)
+        {
+            // Check if invitation already exists
+            var existingInvitation = await _context.Invitations
+                .FirstOrDefaultAsync(i => i.GroupId == groupId && i.UserEmail == userEmail && i.Status == "pending");
+            
+            if (existingInvitation != null)
+            {
+                throw new InvalidOperationException("Invitation already exists");
+            }
+
+            // Get group info
+            var group = await _context.Groups.FindAsync(groupId);
+            if (group == null)
+            {
+                throw new ArgumentException("Group not found");
+            }
+
+            // Check if user is already a member
+            var existingMember = await _context.GroupMembers
+                .FirstOrDefaultAsync(gm => gm.GroupId == groupId && gm.User.Email == userEmail);
+            
+            if (existingMember != null)
+            {
+                throw new InvalidOperationException("User is already a member of this group");
+            }
+
+            var invitation = new Invitation
+            {
+                Id = Guid.NewGuid().ToString(),
+                GroupId = groupId,
+                GroupName = group.Name,
+                UserEmail = userEmail,
+                Status = "pending",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Invitations.Add(invitation);
+            await _context.SaveChangesAsync();
+
+            return invitation;
+        }
+
         public async Task<bool> RespondToInvitationAsync(string invitationId, bool accept, string userId)
         {
             var invitation = await _context.Invitations

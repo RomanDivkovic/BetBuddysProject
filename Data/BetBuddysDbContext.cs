@@ -28,6 +28,11 @@ namespace MyDotNetProject.Data
         public DbSet<Bet> Bets { get; set; }
         public DbSet<BetOption> BetOptions { get; set; }
         public DbSet<UserBet> UserBets { get; set; }
+        
+        // New betting models
+        public DbSet<GroupEvent> GroupEvents { get; set; }
+        public DbSet<MmaFight> MmaFights { get; set; }
+        public DbSet<FightBet> FightBets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -113,6 +118,25 @@ namespace MyDotNetProject.Data
                 .WithMany()
                 .HasForeignKey(c => c.Participant2Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // FightBet relationships
+            modelBuilder.Entity<FightBet>()
+                .HasOne(fb => fb.User)
+                .WithMany()
+                .HasForeignKey(fb => fb.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FightBet>()
+                .HasOne(fb => fb.GroupEvent)
+                .WithMany(ge => ge.Bets)
+                .HasForeignKey(fb => fb.GroupEventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FightBet>()
+                .HasOne(fb => fb.Fight)
+                .WithMany()
+                .HasForeignKey(fb => fb.FightId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes for better performance
             modelBuilder.Entity<User>()

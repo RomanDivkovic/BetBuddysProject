@@ -31,6 +31,7 @@ namespace MyDotNetProject.Services
         Task<Event?> GetEventByIdAsync(string eventId);
         Task<IEnumerable<Event>> GetGroupEventsAsync(string groupId);
         Task<Event> CreateEventAsync(Event eventData);
+        Task<Event> CreateEventAsync(string title, DateTime date, string location, string groupId);
         Task<Event> UpdateEventAsync(Event eventData);
         Task<bool> DeleteEventAsync(string eventId);
         Task<Match?> GetMatchByIdAsync(string matchId);
@@ -73,6 +74,7 @@ namespace MyDotNetProject.Services
         Task<IEnumerable<Invitation>> GetUserInvitationsAsync(string userEmail);
         Task<IEnumerable<Invitation>> GetGroupInvitationsAsync(string groupId);
         Task<Invitation> CreateInvitationAsync(Invitation invitation);
+        Task<Invitation> CreateInvitationAsync(string groupId, string userEmail, string invitedByUserId);
         Task<bool> RespondToInvitationAsync(string invitationId, bool accept, string userId);
         Task<bool> DeleteInvitationAsync(string invitationId);
     }

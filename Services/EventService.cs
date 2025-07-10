@@ -45,6 +45,32 @@ namespace MyDotNetProject.Services
             return eventData;
         }
 
+        public async Task<Event> CreateEventAsync(string title, DateTime date, string location, string groupId)
+        {
+            // Check if group exists
+            var group = await _context.Groups.FindAsync(groupId);
+            if (group == null)
+            {
+                throw new ArgumentException("Group not found");
+            }
+
+            var eventData = new Event
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = title,
+                Date = date,
+                Location = location,
+                GroupId = groupId,
+                Status = "upcoming",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Events.Add(eventData);
+            await _context.SaveChangesAsync();
+            return eventData;
+        }
+
         public async Task<Event> UpdateEventAsync(Event eventData)
         {
             var existingEvent = await _context.Events.FindAsync(eventData.Id);
