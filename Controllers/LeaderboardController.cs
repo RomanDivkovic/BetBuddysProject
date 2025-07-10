@@ -96,11 +96,15 @@ namespace MyDotNetProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Invitation>> CreateInvitation([FromBody] Invitation invitation)
+        public async Task<ActionResult<Invitation>> CreateInvitation([FromBody] CreateInvitationRequest request)
         {
             try
             {
-                var createdInvitation = await _invitationService.CreateInvitationAsync(invitation);
+                var createdInvitation = await _invitationService.CreateInvitationAsync(
+                    request.GroupId, 
+                    request.UserEmail, 
+                    request.InvitedByUserId
+                );
                 return CreatedAtAction(nameof(GetInvitation), new { id = createdInvitation.Id }, createdInvitation);
             }
             catch (Exception ex)
@@ -143,5 +147,12 @@ namespace MyDotNetProject.Controllers
     {
         public bool Accept { get; set; }
         public string UserId { get; set; } = string.Empty;
+    }
+
+    public class CreateInvitationRequest
+    {
+        public required string GroupId { get; set; }
+        public required string UserEmail { get; set; }
+        public required string InvitedByUserId { get; set; }
     }
 }

@@ -48,6 +48,7 @@ builder.Services.AddCors(options =>
 
 // Add custom services
 builder.Services.AddHttpClient<IMmaApiService, MmaApiService>();
+builder.Services.AddScoped<IBettingService, BettingService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<IEventService, EventService>();
