@@ -1,0 +1,29 @@
+# Render deployment configuration
+# Place this file in your repository root for automatic deployment
+
+services:
+  - type: web
+    name: betbuddys-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /api/users
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS  
+        value: http://0.0.0.0:10000
+      - key: ConnectionStrings__ProductionConnection
+        sync: false # Set this manually in Render dashboard
+      - key: MMA_API_KEY
+        sync: false # Set this manually in Render dashboard
+
+# Optional: Add database if you want to use Render's PostgreSQL instead of Neon
+# databases:
+#   - name: betbuddys-db
+#     databaseName: betbuddys
+#     user: betbuddys_user
+#     plan: free

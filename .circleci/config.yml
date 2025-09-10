@@ -1,0 +1,74 @@
+version: 2.1
+
+executors:
+  dotnet-executor:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:9.0
+    working_directory: ~/repo
+
+jobs:
+  build:
+    executor: dotnet-executor
+    steps:
+      - checkout
+      - run:
+          name: Restore dependencies
+          command: dotnet restore
+      - run:
+          name: Build project
+          command: dotnet build --configuration Release --no-restore
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  security-scan:
+    executor: dotnet-executor
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Security vulnerability scan
+          command: dotnet list package --vulnerable --include-transitive || true
+      - run:
+          name: Check for deprecated packages
+          command: dotnet list package --deprecated || true
+
+  docker-build:
+    executor: dotnet-executor
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t betbuddys-backend:$CIRCLE_SHA1 .
+            docker tag betbuddys-backend:$CIRCLE_SHA1 betbuddys-backend:latest
+      - run:
+          name: Test Docker image
+          command: |
+            docker run --rm -d --name test-container -p 8080:8080 \
+              -e ASPNETCORE_ENVIRONMENT=Production \
+              -e ConnectionStrings__ProductionConnection="Data Source=test.db" \
+              betbuddys-backend:latest
+            sleep 10
+            docker logs test-container
+            docker stop test-container || true
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build
+      - security-scan:
+          requires:
+            - build
+      - docker-build:
+          requires:
+            - build
+          filters:
+            branches:
+              only: 
+                - main
+                - develop

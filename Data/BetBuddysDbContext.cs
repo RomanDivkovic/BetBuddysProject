@@ -28,7 +28,7 @@ namespace MyDotNetProject.Data
         public DbSet<Bet> Bets { get; set; }
         public DbSet<BetOption> BetOptions { get; set; }
         public DbSet<UserBet> UserBets { get; set; }
-        
+
         // New betting models
         public DbSet<GroupEvent> GroupEvents { get; set; }
         public DbSet<MmaFight> MmaFights { get; set; }

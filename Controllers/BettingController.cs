@@ -24,7 +24,7 @@ namespace MyDotNetProject.Controllers
             {
                 // Fetch fights from MMA API
                 var mmaResponse = await _mmaApiService.FetchMmaEventsAsync(request.Date);
-                
+
                 // Convert MMA API response to our fight models
                 var fights = new List<MmaFight>();
                 if (mmaResponse.Response != null)
@@ -50,9 +50,9 @@ namespace MyDotNetProject.Controllers
                 }
 
                 var groupEvent = await _bettingService.CreateGroupEventAsync(
-                    request.GroupId, 
-                    request.EventTitle, 
-                    DateTime.Parse(request.Date), 
+                    request.GroupId,
+                    request.EventTitle,
+                    DateTime.Parse(request.Date),
                     fights
                 );
 
