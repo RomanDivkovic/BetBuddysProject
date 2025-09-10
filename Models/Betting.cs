@@ -60,14 +60,14 @@ namespace MyDotNetProject.Models
         public string UserId { get; set; } = string.Empty;
         public string GroupEventId { get; set; } = string.Empty;
         public string FightId { get; set; } = string.Empty;
-        
+
         public string PredictedWinner { get; set; } = string.Empty;
         public string Method { get; set; } = string.Empty; // KO, TKO, Submission, Decision
         public int Confidence { get; set; } = 50; // 1-100
-        
+
         public bool IsCorrect { get; set; } = false; // Set when fight is finished
         public int Points { get; set; } = 0; // Points earned from this bet
-        
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

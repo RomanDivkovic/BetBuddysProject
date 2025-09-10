@@ -22,7 +22,7 @@ namespace MyDotNetProject.Services
 
             var baseUrl = _configuration["MmaApi:BaseUrl"];
             // Try to get API key from environment variable first, then fall back to configuration
-            var apiKey = Environment.GetEnvironmentVariable("MMA_API_KEY") 
+            var apiKey = Environment.GetEnvironmentVariable("MMA_API_KEY")
                         ?? _configuration["MmaApi:ApiKey"];
 
             if (string.IsNullOrEmpty(apiKey))

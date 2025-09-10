@@ -56,7 +56,7 @@ namespace MyDotNetProject.Services
             // Check if invitation already exists
             var existingInvitation = await _context.Invitations
                 .FirstOrDefaultAsync(i => i.GroupId == groupId && i.UserEmail == userEmail && i.Status == "pending");
-            
+
             if (existingInvitation != null)
             {
                 throw new InvalidOperationException("Invitation already exists");
@@ -72,7 +72,7 @@ namespace MyDotNetProject.Services
             // Check if user is already a member
             var existingMember = await _context.GroupMembers
                 .FirstOrDefaultAsync(gm => gm.GroupId == groupId && gm.User.Email == userEmail);
-            
+
             if (existingMember != null)
             {
                 throw new InvalidOperationException("User is already a member of this group");
