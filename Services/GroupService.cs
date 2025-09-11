@@ -32,6 +32,14 @@ namespace MyDotNetProject.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Group>> GetAllGroupsAsync()
+        {
+            return await _context.Groups
+                .Include(g => g.Members)
+                .ThenInclude(gm => gm.User)
+                .ToListAsync();
+        }
+
         public async Task<Group> CreateGroupAsync(Group group)
         {
             if (string.IsNullOrEmpty(group.Id))

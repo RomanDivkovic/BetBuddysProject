@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using MyDotNetProject.Services;
 using MyDotNetProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDotNetProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InvitationsController : ControllerBase
+
+    [Authorize]
+    public class InvitationsController : BaseController
+
     {
         private readonly IInvitationService _invitationService;
 
@@ -42,12 +46,20 @@ namespace MyDotNetProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Invitation>> Create(CreateInvitationRequest request)
         {
+
+            var currentUserId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized("User not authenticated");
+            }
+
+
             try
             {
                 var invitation = await _invitationService.CreateInvitationAsync(
                     request.GroupId,
                     request.UserEmail,
-                    request.InvitedByUserId
+                    currentUserId
                 );
 
                 return CreatedAtAction(nameof(GetById), new { id = invitation.Id }, invitation);
@@ -59,11 +71,17 @@ namespace MyDotNetProject.Controllers
         }
 
         [HttpPut("{id}/accept")]
-        public async Task<ActionResult> Accept(string id, [FromBody] AcceptInvitationRequest request)
+        public async Task<ActionResult> Accept(string id)
         {
+            var currentUserId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized("User not authenticated");
+            }
+
             try
             {
-                var result = await _invitationService.RespondToInvitationAsync(id, true, request.UserId);
+                var result = await _invitationService.RespondToInvitationAsync(id, true, currentUserId);
                 if (!result)
                     return BadRequest("Failed to accept invitation");
                 return Ok();
@@ -75,11 +93,17 @@ namespace MyDotNetProject.Controllers
         }
 
         [HttpPut("{id}/decline")]
-        public async Task<ActionResult> Decline(string id, [FromBody] DeclineInvitationRequest request)
+        public async Task<ActionResult> Decline(string id)
         {
+            var currentUserId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized("User not authenticated");
+            }
+
             try
             {
-                var result = await _invitationService.RespondToInvitationAsync(id, false, request.UserId);
+                var result = await _invitationService.RespondToInvitationAsync(id, false, currentUserId);
                 if (!result)
                     return BadRequest("Failed to decline invitation");
                 return Ok();
@@ -98,20 +122,9 @@ namespace MyDotNetProject.Controllers
         }
     }
 
-    public class CreateInvitationRequest
+     public class CreateInvitationRequest
     {
         public required string GroupId { get; set; }
         public required string UserEmail { get; set; }
-        public required string InvitedByUserId { get; set; }
-    }
-
-    public class AcceptInvitationRequest
-    {
-        public required string UserId { get; set; }
-    }
-
-    public class DeclineInvitationRequest
-    {
-        public required string UserId { get; set; }
     }
 }

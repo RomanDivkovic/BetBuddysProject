@@ -1,18 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 using MyDotNetProject.Models;
 using MyDotNetProject.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDotNetProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GroupsController : ControllerBase
+    [Authorize]
+    public class GroupsController : BaseController
     {
         private readonly IGroupService _groupService;
 
         public GroupsController(IGroupService groupService)
         {
             _groupService = groupService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+        {
+            var groups = await _groupService.GetAllGroupsAsync();
+            return Ok(groups);
         }
 
         [HttpGet("{id}")]
@@ -34,10 +43,24 @@ namespace MyDotNetProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup([FromBody] Group group)
+        public async Task<ActionResult<Group>> CreateGroup([FromBody] CreateGroupRequest request)
         {
+            var currentUserId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized("User not authenticated");
+            }
+
             try
             {
+                var group = new Group
+                {
+                    Name = request.Name,
+                    Description = request.Description,
+                    AdminId = currentUserId,
+                    BettingEnabled = request.BettingEnabled
+                };
+
                 var createdGroup = await _groupService.CreateGroupAsync(group);
                 return CreatedAtAction(nameof(GetGroup), new { id = createdGroup.Id }, createdGroup);
             }
@@ -120,5 +143,12 @@ namespace MyDotNetProject.Controllers
             }
             return Ok();
         }
+    }
+
+    public class CreateGroupRequest
+    {
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public bool BettingEnabled { get; set; } = false;
     }
 }

@@ -2,6 +2,22 @@ using MyDotNetProject.Models;
 
 namespace MyDotNetProject.Services
 {
+    public interface IAuthService
+    {
+        Task<User?> AuthenticateAsync(string email, string password);
+        Task<User> RegisterAsync(string email, string password, string? displayName);
+        Task<string> GenerateJwtTokenAsync(User user);
+        Task<bool> VerifyPasswordAsync(string password, string passwordHash);
+        Task<string> HashPasswordAsync(string password);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<bool> UserExistsAsync(string email);
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+        Task<bool> VerifyPasswordResetTokenAsync(string token);
+        Task<bool> ResetPasswordAsync(string token, string newPassword);
+        Task<bool> VerifyEmailAsync(string token);
+        Task<string> GenerateEmailVerificationTokenAsync(User user);
+    }
+
     public interface IUserService
     {
         Task<User?> GetUserByIdAsync(string userId);
@@ -17,6 +33,7 @@ namespace MyDotNetProject.Services
     {
         Task<Group?> GetGroupByIdAsync(string groupId);
         Task<IEnumerable<Group>> GetUserGroupsAsync(string userId);
+        Task<IEnumerable<Group>> GetAllGroupsAsync();
         Task<Group> CreateGroupAsync(Group group);
         Task<Group> UpdateGroupAsync(Group group);
         Task<bool> DeleteGroupAsync(string groupId);

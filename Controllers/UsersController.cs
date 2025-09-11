@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using MyDotNetProject.Models;
 using MyDotNetProject.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDotNetProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    [Authorize]
+    public class UsersController : BaseController
     {
         private readonly IUserService _userService;
 
