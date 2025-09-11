@@ -7,8 +7,10 @@ namespace MyDotNetProject.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
     [Authorize]
     public class InvitationsController : BaseController
+
     {
         private readonly IInvitationService _invitationService;
 
@@ -44,11 +46,13 @@ namespace MyDotNetProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Invitation>> Create(CreateInvitationRequest request)
         {
+
             var currentUserId = GetCurrentUserId();
             if (string.IsNullOrEmpty(currentUserId))
             {
                 return Unauthorized("User not authenticated");
             }
+
 
             try
             {
@@ -118,7 +122,7 @@ namespace MyDotNetProject.Controllers
         }
     }
 
-    public class CreateInvitationRequest
+     public class CreateInvitationRequest
     {
         public required string GroupId { get; set; }
         public required string UserEmail { get; set; }
