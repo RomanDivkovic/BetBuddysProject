@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyDotNetProject.Data;
 using MyDotNetProject.Services;
+using MyDotNetProject.Middleware;
 
 // Load environment variables from .env file FIRST (before creating builder)
 if (File.Exists(".env"))
@@ -35,6 +36,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add JWT Authentication
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "your-app",
+            ValidAudience = builder.Configuration["Jwt:Audience"] ?? "your-app-users",
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? "your-secret-key-here-make-it-long-and-secure"))
+        };
+    });
+
 // Add CORS
 builder.Services.AddCors(options =>
 {
@@ -58,6 +76,7 @@ builder.Services.AddScoped<IInvitationService, InvitationService>();
 builder.Services.AddScoped<ILeaderboardService, LeaderboardService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -70,7 +89,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+// Add JWT authentication middleware
+app.UseAuthentication();
+app.UseMiddleware<JwtAuthMiddleware>();
 app.UseAuthorization();
+
 app.MapControllers();
 
 // Initialize database

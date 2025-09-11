@@ -9,6 +9,11 @@ namespace MyDotNetProject.Models
         public string Email { get; set; } = string.Empty;
         public string? DisplayName { get; set; }
         public string? PhotoURL { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
+        public string? ResetToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
+        public bool EmailVerified { get; set; } = false;
+        public string? EmailVerificationToken { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
