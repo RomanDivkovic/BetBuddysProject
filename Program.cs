@@ -97,11 +97,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Initialize database
+// Initialize database: apply EF Core migrations at startup (safe for production)
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<BetBuddysDbContext>();
-    context.Database.EnsureCreated();
+    // In development you may prefer EnsureCreated(); migrations are required for schema changes
+    context.Database.Migrate();
 }
 
 app.Run();

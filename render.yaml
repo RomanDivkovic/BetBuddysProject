@@ -1,3 +1,24 @@
+services:
+  - type: web
+    name: mydotnetproject-api
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    regions:
+      - oregon
+    buildCommand: ""
+    startCommand: "dotnet MyDotNetProject.dll --urls \"http://0.0.0.0:5000\""
+    envVars:
+      - key: ProductionConnection
+        sync: false
+      - key: Jwt__Key
+        sync: false
+      - key: Jwt__Issuer
+        sync: false
+      - key: Jwt__Audience
+        sync: false
+      - key: ASPNETCORE_ENVIRONMENT
+        sync: false
 # Render deployment configuration
 # Place this file in your repository root for automatic deployment
 
